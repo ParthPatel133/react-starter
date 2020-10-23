@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import "./App.css";
+import person from "./Person/Person";
 import Person from "./Person/Person";
 
 class App extends Component {
@@ -9,8 +10,8 @@ class App extends Component {
       { name: "tushar", age: 22 },
       { name: "viral", age: 21 },
     ],
-    otherState: 'some other value',
-    showPersons: false
+    otherState: "some other value",
+    showPersons: false,
   };
 
   switchNameHandler = (newName) => {
@@ -38,8 +39,8 @@ class App extends Component {
 
   togglePersonsHandler = () => {
     const doesShow = this.state.showPersons;
-    this.setState({showPersons: !doesShow})
-  }
+    this.setState({ showPersons: !doesShow });
+  };
 
   render() {
     const style = {
@@ -50,18 +51,10 @@ class App extends Component {
       cursor: "pointer",
     };
 
-    return (
-      <div className="App">
-        <h1>Hi, react App</h1>
-        <p>this is para inside h1</p>
-        <button
-          style={style}
-          onClick={this.togglePersonsHandler}
-        >
-          Swith Name
-        </button>
-        { this.state.showPersons ?
-          <div>
+    let persons = null;
+    if (this.state.showPersons) {
+      persons = (
+        <div>
           <Person
             name={this.state.persons[0].name}
             age={this.state.persons[0].age}
@@ -76,8 +69,18 @@ class App extends Component {
             name={this.state.persons[2].name}
             age={this.state.persons[2].age}
           />
-        </div> : null
-      }
+        </div>
+      );
+    }
+
+    return (
+      <div className="App">
+        <h1>Hi, react App</h1>
+        <p>this is para inside h1</p>
+        <button style={style} onClick={this.togglePersonsHandler}>
+          Toggle Position
+          </button>
+          {persons}
       </div>
     );
   }
