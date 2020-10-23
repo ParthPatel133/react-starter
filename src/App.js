@@ -1,40 +1,39 @@
 import React, { Component } from "react";
 import "./App.css";
-import person from "./Person/Person";
 import Person from "./Person/Person";
 
 class App extends Component {
   state = {
     persons: [
-      { name: "parth", age: 22 },
-      { name: "tushar", age: 22 },
-      { name: "viral", age: 21 },
+      { id: "id1", name: "parth", age: 22 },
+      { id: "id2", name: "tushar", age: 22 },
+      { id: "id3", name: "viral", age: 21 },
     ],
     otherState: "some other value",
     showPersons: false,
   };
 
-  switchNameHandler = (newName) => {
-    // console.log('clicked');
-    // dont't directly update state, react won't allow. instead use this.setState method
-
-    this.setState({
-      persons: [
-        { name: newName, age: 22 },
-        { name: "bunty", age: 22 },
-        { name: "dhruval", age: 21 },
-      ],
+  nameChangeHandler = (event, id) => {
+    const personIndex = this.state.persons.findIndex((p) => {
+      return p.id === id;
     });
+
+    const person = { ...this.state.persons[personIndex] }; //copy object to immutate
+    // const person = Object.assign({}, this.state.persons[personIndex])   //other method
+
+    person.name = event.target.value;
+
+    const persons = [...this.state.persons];
+    persons[personIndex] = person;
+
+    this.setState({ persons: persons });
   };
 
-  nameChangeHandler = (event) => {
-    this.setState({
-      persons: [
-        { name: "parth", age: 22 },
-        { name: event.target.value, age: 22 },
-        { name: "dhruval", age: 21 },
-      ],
-    });
+  deletePersonHandler = (personIndex) => {
+    // const persons = thsq.state.persons.slice();  //to immutate the persons array
+    const persons = [...this.state.persons];
+    persons.splice(personIndex, 1);
+    this.setState({ persons: persons });
   };
 
   togglePersonsHandler = () => {
@@ -55,20 +54,17 @@ class App extends Component {
     if (this.state.showPersons) {
       persons = (
         <div>
-          <Person
-            name={this.state.persons[0].name}
-            age={this.state.persons[0].age}
-          />
-          <Person
-            name={this.state.persons[1].name}
-            age={this.state.persons[1].age}
-            click={this.switchNameHandler.bind(this, "Jadiyo!")}
-            changed={this.nameChangeHandler}
-          />
-          <Person
-            name={this.state.persons[2].name}
-            age={this.state.persons[2].age}
-          />
+          {this.state.persons.map((person, index) => {
+            return (
+              <Person
+                click={() => this.deletePersonHandler(index)}
+                name={person.name}
+                age={person.age}
+                key={person.id}
+                changed={(event) => this.nameChangeHandler(event, person.id)}
+              />
+            );
+          })}
         </div>
       );
     }
@@ -79,8 +75,8 @@ class App extends Component {
         <p>this is para inside h1</p>
         <button style={style} onClick={this.togglePersonsHandler}>
           Toggle Position
-          </button>
-          {persons}
+        </button>
+        {persons}
       </div>
     );
   }
