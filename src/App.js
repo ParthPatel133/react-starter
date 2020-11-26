@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import "./App.css";
-import Radium, { StyleRoot } from 'radium';
 import Person from "./Person/Person";
 
 class App extends Component {
@@ -20,7 +19,6 @@ class App extends Component {
     });
 
     const person = { ...this.state.persons[personIndex] }; //copy object to immutate
-    // const person = Object.assign({}, this.state.persons[personIndex])   //other method
 
     person.name = event.target.value;
 
@@ -31,7 +29,6 @@ class App extends Component {
   };
 
   deletePersonHandler = (personIndex) => {
-    // const persons = thsq.state.persons.slice();  //to immutate the persons array
     const persons = [...this.state.persons];
     persons.splice(personIndex, 1);
     this.setState({ persons: persons });
@@ -89,18 +86,16 @@ class App extends Component {
     }
 
     return (
-      <StyleRoot>
-        <div className="App">
-          <h1>Hi, react App</h1>
-          <p className={classes.join(' ')}>this is para inside h1</p>
-          <button style={style} onClick={this.togglePersonsHandler}>
-            Toggle Position
+      <div className="App">
+        <h1>Hi, react App</h1>
+        <p className={classes.join(' ')}>this is para inside h1</p>
+        <button style={style} onClick={this.togglePersonsHandler}>
+          Toggle Position
         </button>
-          {persons}
-        </div>
-      </StyleRoot>
+        {persons}
+      </div>
     );
   }
 }
 
-export default Radium(App);
+export default App;
